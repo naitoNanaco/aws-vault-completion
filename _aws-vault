@@ -1,0 +1,49 @@
+#compdef aws-vault
+
+_aws-vault() {
+  local -a val
+  val=(help add list rotate exec clear remove login)
+
+  _arguments \
+    '1: :->subcommand' \
+    '*:: :->args' \
+
+  case "$state" in
+    subcommand)
+      _values $state $val
+      ;;
+    args)
+      case $words[1] in
+        exec)
+          _arguments \
+            '1: :__aws-vault-profile' \
+            '*:: :__aws-vault-exec-precommand' \
+          ;;
+      esac
+      ;;
+  esac
+}
+
+__aws-vault-profile() {
+  local -a val
+  val=(`aws-vault ls | awk 'NR>2 {if ($1 != "-") print $1}'`)
+  _values 'profile' $val
+}
+
+__aws-vault-exec-precommand() {
+  _arguments \
+    '1: :__aws-vault-delimiter' \
+    '*:: :__aws-vault-exec-command' \
+}
+
+__aws-vault-delimiter() {
+  local -a val
+  val=(--)
+  _values 'EOC' $val
+}
+
+__aws-vault-exec-command() {
+  _command aws-vault
+}
+
+compdef _aws-vault aws-vault
