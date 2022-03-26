@@ -7,7 +7,7 @@
 ## How to set up
 
 1. Put `_aws-vault` in your completion's folder ( `/path/to/completion/` ).
-1. Enable completions.
+1. Enable completions in `~/.zshrc`.
 ```shell:~/.zshrc
 fpath=(/path/to/completion $fpath)
 autoload -Uz compinit
